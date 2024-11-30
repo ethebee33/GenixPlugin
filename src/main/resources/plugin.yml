@@ -1,0 +1,27 @@
+name: GenixPlugin
+version: '1.0'
+main: com.ethebee3.Genix.Main
+api-version: '1.20'
+
+commands:
+  tempban:
+    discription: self explanatory
+    usage: is bro stupid
+  tempmute:
+    discription: self explanatory
+    usage: is bro stupid
+  ban:
+    discription: self explanatory
+    usage: is bro stupid
+  mute:
+    discription: self explanatory
+    usage: is bro stupid
+  kick:
+    discription: self explanatory
+    usage: is bro stupid
+  unban:
+    discription: self explanatory
+    usage: is bro stupid
+  unmute:
+    discription: self explanatory
+    usage: is bro stupid
