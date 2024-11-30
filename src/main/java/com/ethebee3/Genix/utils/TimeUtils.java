@@ -83,8 +83,9 @@ public class TimeUtils {
         return totalSeconds;
     }
 
-    public static int getCurrentTime() {
-        return (int) (System.currentTimeMillis() / 1000);
-    }
+    public static int getCurrentTime() { return (int) (System.currentTimeMillis() / 1000); }
 
+    public static int secondsFromNow(int seconds) { return (getCurrentTime() + seconds); }
+
+    public static int secondsToTicks(int seconds) { return seconds*20; }
 }

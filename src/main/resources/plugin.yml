@@ -25,3 +25,7 @@ commands:
   unmute:
     discription: self explanatory
     usage: is bro stupid
+
+  skull:
+    discription: get testing head
+    usage: /skull

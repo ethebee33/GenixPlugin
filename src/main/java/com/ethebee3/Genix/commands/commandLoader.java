@@ -11,5 +11,7 @@ public class commandLoader {
         plugin.getCommand("kick").setExecutor(new punishmentCMD(plugin));
         plugin.getCommand("unban").setExecutor(new punishmentCMD(plugin));
         plugin.getCommand("unmute").setExecutor(new punishmentCMD(plugin));
+
+        plugin.getCommand("skull").setExecutor(new skullCMD(plugin));
     }
 }
