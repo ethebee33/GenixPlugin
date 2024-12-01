@@ -1,5 +1,6 @@
 package com.ethebee3.Genix.saifpenguin;
 
+import com.ethebee3.Genix.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -17,19 +18,13 @@ import org.bukkit.block.Block;
 
 import java.util.HashMap;
 
-public class Forcefield extends JavaPlugin implements Listener {
+public class ForceField implements Listener {
     public HashMap<Player, Integer> playerCooldown = new HashMap<>();
-
-    @Override
-    public void onEnable() {
-        Bukkit.getPluginManager().registerEvents(this, this);
-        getCommand("skull").setExecutor(new skull());
+    Main plugin;
+    public ForceField(Main plugin){
+        this.plugin = plugin;
     }
 
-    @Override
-    public void onDisable() {
-        // Plugin shutdown logic
-    }
 
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
@@ -45,7 +40,7 @@ public class Forcefield extends JavaPlugin implements Listener {
                         createForceField(player, player.getLocation());
                         playerCooldown.put(event.getPlayer(), currentTime + 120000);
                         player.setCooldown(player.getInventory().getItemInMainHand().getType(), 2400);
-                        Bukkit.getScheduler().runTaskLater(this, () -> {
+                        Bukkit.getScheduler().runTaskLater(plugin, () -> {
                             playerCooldown.remove(player);
                         }, 2400);
 
@@ -53,17 +48,22 @@ public class Forcefield extends JavaPlugin implements Listener {
                 }
             }
 
-        } else {
-            if (event.getHand().equals(EquipmentSlot.HAND)) {
-                if (player.getInventory().getItemInMainHand().getType() == Material.PLAYER_HEAD) {
-                    if (player.getInventory().getItemInMainHand().getItemMeta().getDisplayName().equals(ChatColor.translateAlternateColorCodes('&', "&b&lFORCE FIELD"))) {
-                        if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
-                            event.setCancelled(true);
-                            player.sendMessage(ChatColor.RED + "You still need to wait " + ((playerCooldown.get(player) - currentTime) / 1000) + " seconds before using this item again.");
-                            return;
-                        }
+        }else{
+            getCooldown(player, event);
+        }
 
 
+
+
+    }
+
+    public void getCooldown(Player player, PlayerInteractEvent event) {
+        if (event.getHand().equals(EquipmentSlot.HAND) && event.getAction() == Action.RIGHT_CLICK_BLOCK){
+            if(player.getInventory().getItemInMainHand().getType() == Material.PLAYER_HEAD) {
+                if (player.getInventory().getItemInMainHand().getItemMeta().getDisplayName().equals(ChatColor.translateAlternateColorCodes('&', "&b&lFORCE FIELD"))) {
+                    if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
+                        int remainingTime = (playerCooldown.get(player) - (int) System.currentTimeMillis()) / 1000;
+                        player.sendMessage("Cooldown: " + remainingTime + " seconds");
                     }
                 }
             }
@@ -114,6 +114,6 @@ public class Forcefield extends JavaPlugin implements Listener {
                     }
                 }
             }
-        }.runTaskLater(this, 300);
+        }.runTaskLater(plugin, 300);
     }
 }
