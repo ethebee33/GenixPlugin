@@ -7,6 +7,8 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/DupePlugin.main.iml" filepath="$PROJECT_DIR$/.idea/modules/DupePlugin.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/Genix.RushPlugin.main.iml" filepath="$PROJECT_DIR$/.idea/modules/Genix.RushPlugin.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/Genix.RushPlugin.test.iml" filepath="$PROJECT_DIR$/.idea/modules/Genix.RushPlugin.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/GenixPlugin.main.iml" filepath="$PROJECT_DIR$/.idea/modules/GenixPlugin.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/GenixPlugin.test.iml" filepath="$PROJECT_DIR$/.idea/modules/GenixPlugin.test.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/IdeaProjects.BetturPlugin.main.iml" filepath="$PROJECT_DIR$/.idea/modules/IdeaProjects.BetturPlugin.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/RushPlugin.main.iml" filepath="$PROJECT_DIR$/.idea/modules/RushPlugin.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/RushPlugin.test.iml" filepath="$PROJECT_DIR$/.idea/modules/RushPlugin.test.iml" />
