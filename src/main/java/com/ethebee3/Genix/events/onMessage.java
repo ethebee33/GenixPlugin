@@ -26,17 +26,15 @@ public class onMessage implements Listener {
     @EventHandler
     public void onMessage(AsyncPlayerChatEvent event) {
         Player player = event.getPlayer();
+        if(functionCallback.get(player) != null) {
+            functionCallback.get(player).apply(event);
+        }
+
         Object muted = banData.banDataConfig.get("muted."+player.getUniqueId());
         if (muted == "true") event.setCancelled(true);
         Object tempmuted = banData.banDataConfig.get("tempmute."+player.getUniqueId());
         if (tempmuted != null) if ((int) tempmuted > TimeUtils.getCurrentTime()) event.setCancelled(true);
-
-        if(functionCallback.get(player) != null) {
-            functionCallback.get(player).apply(event.getMessage());
-        }
-
     }
-
 
     static String seperator = " ⇒ ";
 
