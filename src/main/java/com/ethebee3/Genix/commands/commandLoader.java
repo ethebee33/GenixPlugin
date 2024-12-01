@@ -13,5 +13,7 @@ public class commandLoader {
         plugin.getCommand("unmute").setExecutor(new punishmentCMD(plugin));
 
         plugin.getCommand("skull").setExecutor(new skullCMD(plugin));
+
+        plugin.getCommand("report").setExecutor(new reportCMD(plugin));
     }
 }

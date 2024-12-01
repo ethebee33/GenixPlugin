@@ -13,7 +13,9 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 import com.ethebee3.Genix.data.banData;
 
+import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 public class onMessage implements Listener {
@@ -21,13 +23,14 @@ public class onMessage implements Listener {
     public onMessage(Main serverPlugin) {
         this.plugin = serverPlugin;
     }
-    public static Map<Player, Function> functionCallback;
+    public static Map<Player, Consumer<AsyncPlayerChatEvent>> functionCallback = new HashMap<>();
 
     @EventHandler
     public void onMessage(AsyncPlayerChatEvent event) {
         Player player = event.getPlayer();
-        if(functionCallback.get(player) != null) {
-            functionCallback.get(player).apply(event);
+        if (functionCallback.containsKey(player)) {
+            functionCallback.get(player).accept(event);
+            functionCallback.remove(player);
         }
 
         Object muted = banData.banDataConfig.get("muted."+player.getUniqueId());
