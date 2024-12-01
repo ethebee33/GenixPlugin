@@ -13,31 +13,31 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 import com.ethebee3.Genix.data.banData;
 
+import java.util.Map;
+import java.util.function.Function;
+
 public class onMessage implements Listener {
     private final Main plugin;
     public onMessage(Main serverPlugin) {
         this.plugin = serverPlugin;
     }
+    public static Map<Player, Function> functionCallback;
 
     @EventHandler
     public void onMessage(AsyncPlayerChatEvent event) {
-        //event.setCancelled(true);
-        /*
-        for(Player player : Bukkit.getOnlinePlayers()) {
-            StringBuilder gradient = Gradient.formatGradientStringBuilder(event.getMessage(), "#000000", "#FFFFFF");
-            //TODO: make a config part of playerData for gradient settings
-            String message = chatUtils.formatMessageForPlayer(gradient, event.getPlayer());
-            chatUtils.sendMessage(player, message, false);
-        }
-
-         */
         Player player = event.getPlayer();
         Object muted = banData.banDataConfig.get("muted."+player.getUniqueId());
         if (muted == "true") event.setCancelled(true);
-        int tempmuted = (int) banData.banDataConfig.get("tempmute."+player.getUniqueId());
-        if (tempmuted > TimeUtils.getCurrentTime()) event.setCancelled(true);
+        Object tempmuted = banData.banDataConfig.get("tempmute."+player.getUniqueId());
+        if (tempmuted != null) if ((int) tempmuted > TimeUtils.getCurrentTime()) event.setCancelled(true);
+
+        if(functionCallback.get(player) != null) {
+            functionCallback.get(player).apply(event.getMessage());
+        }
 
     }
+
+
     static String seperator = " ⇒ ";
 
     public static void customChat(AsyncPlayerChatEvent event) {

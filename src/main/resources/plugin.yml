@@ -29,3 +29,7 @@ commands:
   skull:
     discription: get testing head
     usage: /skull
+
+  report:
+    discription: report a player for breaking the rules
+    usage: /report <player>

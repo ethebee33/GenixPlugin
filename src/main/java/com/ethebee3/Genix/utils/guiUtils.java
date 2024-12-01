@@ -1,5 +1,7 @@
 package com.ethebee3.Genix.utils;
 
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -27,4 +29,8 @@ public class guiUtils {
         guiConfig.set(Title, toSave);
     }
     */
+
+    public static void setClickEventToCommand(TextComponent text, String command) {
+        text.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, command));
+    }
 }
