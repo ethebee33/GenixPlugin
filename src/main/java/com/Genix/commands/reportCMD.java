@@ -34,8 +34,8 @@ public class reportCMD implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String command2, String[] args) {
         Player commandsender2 = (Player) commandSender;
-        if (args[1] == "gui") {
-            switch (args[2]) {
+        if (args[0] == "gui") {
+            switch (args[1]) {
                 case "chat" -> {
                     closeBookForPlayer(commandsender2);
                     ItemStack bookgui = new ItemStack(Material.WRITTEN_BOOK);
@@ -44,20 +44,20 @@ public class reportCMD implements CommandExecutor {
                     bookMeta.setTitle("Report a player");
                     bookMeta.setAuthor("ethebee3");
 
-                    String line1 = "&lReporting "+args[3]+" for breaking chat rules:";
+                    String line1 = "&lReporting "+args[2]+" for breaking chat rules:";
                     String line2 = "What would you like to report them for:\n";
 
                     TextComponent line3 = new TextComponent("&4&lToxicity");
-                    guiUtils.setClickEventToCommand(line3, "/report gui finish chat toxicity "+args[3]);
+                    guiUtils.setClickEventToCommand(line3, "/report gui finish chat toxicity "+args[2]);
 
                     TextComponent line4 = new TextComponent("&4&lSlurs");
-                    guiUtils.setClickEventToCommand(line4, "/report gui finish chat toxicity "+args[3]);
+                    guiUtils.setClickEventToCommand(line4, "/report gui finish chat toxicity "+args[2]);
 
                     TextComponent line5 = new TextComponent("&4&lDiscrimination");
-                    guiUtils.setClickEventToCommand(line4, "/report gui finish chat discrimination "+args[3]);
+                    guiUtils.setClickEventToCommand(line4, "/report gui finish chat discrimination "+args[2]);
 
                     TextComponent line6 = new TextComponent("&4&lHate speech");
-                    guiUtils.setClickEventToCommand(line4, "/report gui finish chat hatespeech "+args[3]);
+                    guiUtils.setClickEventToCommand(line4, "/report gui finish chat hatespeech "+args[2]);
 
                     bookMeta.addPage(String.join("\n", line1, line2, line3.getText(), line4.getText(), line5.getText(), line6.getText()));
                     bookgui.setItemMeta(bookMeta);
@@ -71,20 +71,20 @@ public class reportCMD implements CommandExecutor {
                     bookMeta.setTitle("Report a player");
                     bookMeta.setAuthor("ethebee3");
 
-                    String line1 = "&lReporting " + args[3] + " for cheating:";
+                    String line1 = "&lReporting " + args[2] + " for cheating:";
                     String line2 = "What would you like to report them for:\n";
 
                     TextComponent line3 = new TextComponent("&4&lKillaura");
-                    guiUtils.setClickEventToCommand(line3, "/report gui finish chat toxicity " + args[3]);
+                    guiUtils.setClickEventToCommand(line3, "/report gui finish chat toxicity " + args[2]);
 
                     TextComponent line4 = new TextComponent("&4&lAutoCrit");
-                    guiUtils.setClickEventToCommand(line4, "/report gui finish chat toxicity " + args[3]);
+                    guiUtils.setClickEventToCommand(line4, "/report gui finish chat toxicity " + args[2]);
 
                     TextComponent line5 = new TextComponent("&4&lAutoTotem");
-                    guiUtils.setClickEventToCommand(line4, "/report gui finish chat discrimination " + args[3]);
+                    guiUtils.setClickEventToCommand(line4, "/report gui finish chat discrimination " + args[2]);
 
                     TextComponent line6 = new TextComponent("&4&lOther");
-                    guiUtils.setClickEventToCommand(line4, "/report gui finish chat hatespeech " + args[3]);
+                    guiUtils.setClickEventToCommand(line4, "/report gui finish chat hatespeech " + args[2]);
 
                     bookMeta.addPage(String.join("\n", line1, line2, line3.getText(), line4.getText(), line5.getText()));
                     bookgui.setItemMeta(bookMeta);
@@ -98,14 +98,14 @@ public class reportCMD implements CommandExecutor {
                     bookMeta.setTitle("Report a player");
                     bookMeta.setAuthor("ethebee3");
 
-                    String line1 = "&lYou are reporting "+args[5]+" for "+args[4];
+                    String line1 = "&lYou are reporting "+args[4]+" for "+args[3];
                     String line2 = "Is there any additional info you would like to add?\n";
 
                     TextComponent line3 = new TextComponent("&4&lYes");
-                    guiUtils.setClickEventToCommand(line3, "/report gui finish3" + String.join(" ", args[3], args[4], args[5]));
+                    guiUtils.setClickEventToCommand(line3, "/report gui finish3" + String.join(" ", args[2], args[3], args[4]));
 
                     TextComponent line4 = new TextComponent("&4&lNo thats all");
-                    guiUtils.setClickEventToCommand(line4, "/report gui finish2" + String.join(" ", args[3], args[4], args[5]));
+                    guiUtils.setClickEventToCommand(line4, "/report gui finish2" + String.join(" ", args[2], args[3], args[4]));
 
                     bookMeta.addPage(String.join("\n", line1, line2, line3.getText(), line4.getText()));
                     bookgui.setItemMeta(bookMeta);
@@ -113,13 +113,13 @@ public class reportCMD implements CommandExecutor {
                 }
                 case "finish2" -> {
                     closeBookForPlayer(commandsender2);
-                    finishBookReport(commandsender2.getName(), args[5], args[3], args[4], "n/a");
+                    finishBookReport(commandsender2.getName(), args[4], args[2], args[3], "n/a");
                 }
                 case "finish3" -> {
                     closeBookForPlayer(commandsender2);
                     Consumer<AsyncPlayerChatEvent> callback = (event) -> {
                         String message = event.getMessage();
-                        finishBookReport(commandsender2.getName(), args[5], args[3], args[4], message);
+                        finishBookReport(commandsender2.getName(), args[4], args[2], args[3], message);
                     };
                     onMessage.functionCallback.put(commandsender2, callback);
                 }
@@ -132,14 +132,14 @@ public class reportCMD implements CommandExecutor {
             bookMeta.setTitle("Report a player");
             bookMeta.setAuthor("ethebee3");
 
-            String line1 = "&lReporting "+args[1];
+            String line1 = "&lReporting "+args[0];
             String line2 = "What would you like to report them for:\n";
 
             TextComponent line3 = new TextComponent("&4&lChat Reporting");
-            guiUtils.setClickEventToCommand(line3, "/report gui cheat "+args[1]);
+            guiUtils.setClickEventToCommand(line3, "/report gui cheat "+args[0]);
 
             TextComponent line4 = new TextComponent("&4&lCheat Reporting");
-            guiUtils.setClickEventToCommand(line4, "/report gui chat "+args[1]);
+            guiUtils.setClickEventToCommand(line4, "/report gui chat "+args[0]);
 
             bookMeta.addPage(String.join("\n", line1, line2, line3.getText(), line4.getText()));
             bookgui.setItemMeta(bookMeta);
