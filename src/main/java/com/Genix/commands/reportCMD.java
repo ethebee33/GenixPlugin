@@ -2,6 +2,7 @@ package com.Genix.commands;
 
 import com.Genix.events.onMessage;
 import com.Genix.utils.guiUtils;
+import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -21,141 +22,101 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Consumer;
-
 
 public class reportCMD implements CommandExecutor {
     private final JavaPlugin plugin;
+
     public reportCMD(JavaPlugin plugin) {
         this.plugin = plugin;
     }
 
-
     @Override
-    public boolean onCommand(CommandSender commandSender, Command command, String command2, String[] args) {
-        Player commandsender2 = (Player) commandSender;
-        if (args[0] == "gui") {
-            switch (args[1]) {
-                case "chat" -> {
-                    closeBookForPlayer(commandsender2);
-                    ItemStack bookgui = new ItemStack(Material.WRITTEN_BOOK);
-                    BookMeta bookMeta = (BookMeta) bookgui.getItemMeta();
-
-                    bookMeta.setTitle("Report a player");
-                    bookMeta.setAuthor("ethebee3");
-
-                    String line1 = "&lReporting "+args[2]+" for breaking chat rules:";
-                    String line2 = "What would you like to report them for:\n";
-
-                    TextComponent line3 = new TextComponent("&4&lToxicity");
-                    guiUtils.setClickEventToCommand(line3, "/report gui finish chat toxicity "+args[2]);
-
-                    TextComponent line4 = new TextComponent("&4&lSlurs");
-                    guiUtils.setClickEventToCommand(line4, "/report gui finish chat toxicity "+args[2]);
-
-                    TextComponent line5 = new TextComponent("&4&lDiscrimination");
-                    guiUtils.setClickEventToCommand(line4, "/report gui finish chat discrimination "+args[2]);
-
-                    TextComponent line6 = new TextComponent("&4&lHate speech");
-                    guiUtils.setClickEventToCommand(line4, "/report gui finish chat hatespeech "+args[2]);
-
-                    bookMeta.addPage(String.join("\n", line1, line2, line3.getText(), line4.getText(), line5.getText(), line6.getText()));
-                    bookgui.setItemMeta(bookMeta);
-                    openBookForPlayer(commandsender2, bookgui);
-                }
-                case "cheat" -> {
-                    closeBookForPlayer(commandsender2);
-                    ItemStack bookgui = new ItemStack(Material.WRITTEN_BOOK);
-                    BookMeta bookMeta = (BookMeta) bookgui.getItemMeta();
-
-                    bookMeta.setTitle("Report a player");
-                    bookMeta.setAuthor("ethebee3");
-
-                    String line1 = "&lReporting " + args[2] + " for cheating:";
-                    String line2 = "What would you like to report them for:\n";
-
-                    TextComponent line3 = new TextComponent("&4&lKillaura");
-                    guiUtils.setClickEventToCommand(line3, "/report gui finish chat toxicity " + args[2]);
-
-                    TextComponent line4 = new TextComponent("&4&lAutoCrit");
-                    guiUtils.setClickEventToCommand(line4, "/report gui finish chat toxicity " + args[2]);
-
-                    TextComponent line5 = new TextComponent("&4&lAutoTotem");
-                    guiUtils.setClickEventToCommand(line4, "/report gui finish chat discrimination " + args[2]);
-
-                    TextComponent line6 = new TextComponent("&4&lOther");
-                    guiUtils.setClickEventToCommand(line4, "/report gui finish chat hatespeech " + args[2]);
-
-                    bookMeta.addPage(String.join("\n", line1, line2, line3.getText(), line4.getText(), line5.getText()));
-                    bookgui.setItemMeta(bookMeta);
-                    openBookForPlayer(commandsender2, bookgui);
-                }
-                case "finish" -> {
-                    closeBookForPlayer(commandsender2);
-                    ItemStack bookgui = new ItemStack(Material.WRITTEN_BOOK);
-                    BookMeta bookMeta = (BookMeta) bookgui.getItemMeta();
-
-                    bookMeta.setTitle("Report a player");
-                    bookMeta.setAuthor("ethebee3");
-
-                    String line1 = "&lYou are reporting "+args[4]+" for "+args[3];
-                    String line2 = "Is there any additional info you would like to add?\n";
-
-                    TextComponent line3 = new TextComponent("&4&lYes");
-                    guiUtils.setClickEventToCommand(line3, "/report gui finish3" + String.join(" ", args[2], args[3], args[4]));
-
-                    TextComponent line4 = new TextComponent("&4&lNo thats all");
-                    guiUtils.setClickEventToCommand(line4, "/report gui finish2" + String.join(" ", args[2], args[3], args[4]));
-
-                    bookMeta.addPage(String.join("\n", line1, line2, line3.getText(), line4.getText()));
-                    bookgui.setItemMeta(bookMeta);
-                    openBookForPlayer(commandsender2, bookgui);
-                }
-                case "finish2" -> {
-                    closeBookForPlayer(commandsender2);
-                    finishBookReport(commandsender2.getName(), args[4], args[2], args[3], "n/a");
-                }
-                case "finish3" -> {
-                    closeBookForPlayer(commandsender2);
-                    Consumer<AsyncPlayerChatEvent> callback = (event) -> {
-                        String message = event.getMessage();
-                        finishBookReport(commandsender2.getName(), args[4], args[2], args[3], message);
-                    };
-                    onMessage.functionCallback.put(commandsender2, callback);
-                }
-            }
-
-        } else {
-            ItemStack bookgui = new ItemStack(Material.WRITTEN_BOOK);
-            BookMeta bookMeta = (BookMeta) bookgui.getItemMeta();
-
-            bookMeta.setTitle("Report a player");
-            bookMeta.setAuthor("ethebee3");
-
-            String line1 = "&lReporting "+args[0];
-            String line2 = "What would you like to report them for:\n";
-
-            TextComponent line3 = new TextComponent("&4&lChat Reporting");
-            guiUtils.setClickEventToCommand(line3, "/report gui cheat "+args[0]);
-
-            TextComponent line4 = new TextComponent("&4&lCheat Reporting");
-            guiUtils.setClickEventToCommand(line4, "/report gui chat "+args[0]);
-
-            bookMeta.addPage(String.join("\n", line1, line2, line3.getText(), line4.getText()));
-            bookgui.setItemMeta(bookMeta);
-            openBookForPlayer(commandsender2, bookgui);
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        if (!(sender instanceof Player)) {
+            sender.sendMessage("Only players can use this command.");
+            return true;
         }
+
+        Player player = (Player) sender;
+
+        if (args.length == 0) {
+            player.sendMessage("Usage: /report <gui/chat/cheat>");
+            return true;
+        }
+
+        String subCommand = args[0].toLowerCase();
+        switch (subCommand) {
+            case "gui" -> handleGuiCommand(player, args);
+            default -> player.sendMessage("Invalid command. Use /report gui.");
+        }
+
         return true;
     }
 
-    private void openBookForPlayer(Player player, ItemStack book) {
-        try {
-            PacketContainer packet = new PacketContainer(PacketType.Play.Server.OPEN_BOOK);
-            packet.getItemModifier().write(0, book);
-            ProtocolLibrary.getProtocolManager().sendServerPacket(player, packet);
-        } catch (Exception e) {
-            e.printStackTrace();
+    private void handleGuiCommand(Player player, String[] args) {
+        if (args[0] == "gui") {
+            switch (args[1]) {
+                case "chat" -> {
+                    String targetPlayer = args[2];
+                    openReportBook(player, "Reporting " + targetPlayer + " for chat rules", List.of(
+                            createRegularLine("Reporting "+targetPlayer+":"),
+                            createClickableLine("§4§lToxicity", "/report gui finish chat toxicity " + targetPlayer),
+                            createClickableLine("§4§lSlurs", "/report gui finish chat slurs " + targetPlayer),
+                            createClickableLine("§4§lDiscrimination", "/report gui finish chat discrimination " + targetPlayer),
+                            createClickableLine("§4§lHate Speech", "/report gui finish chat hatespeech " + targetPlayer)
+                    ));
+                }
+                case "cheat" -> {
+                    String targetPlayer = args[2];
+                    openReportBook(player, "Reporting " + targetPlayer + " for cheating", List.of(
+                            createRegularLine("Reporting "+targetPlayer+":"),
+                            createClickableLine("§4§lKillaura", "/report gui finish cheat killaura " + targetPlayer),
+                            createClickableLine("§4§lAutoCrit", "/report gui finish cheat autocrit " + targetPlayer),
+                            createClickableLine("§4§lAutoTotem", "/report gui finish cheat autototem " + targetPlayer)//,
+                        //createClickableLine("§4§lOther", "/report gui finish cheat other " + targetPlayer)
+                    ));
+                }
+                case "finish" -> {
+                    finishBookReport(player.getName(), args[4], args[2], args[3]);
+                }
+            }
+        } else {
+            String targetPlayer = args[0];
+            openReportBook(player, "Report a player", List.of(
+                    createRegularLine("Reporting "+targetPlayer+":"),
+                    createClickableLine("§4§lKillaura", "/report gui finish cheat killaura " + targetPlayer),
+                    createClickableLine("§4§lAutoCrit", "/report gui finish cheat autocrit " + targetPlayer),
+                    createClickableLine("§4§lAutoTotem", "/report gui finish cheat autototem " + targetPlayer)//,
+                    //createClickableLine("§4§lOther", "/report gui finish cheat other " + targetPlayer)
+            ));
         }
+    }
+
+    private void openReportBook(Player player, String title, List<String> pages) {
+        closeBookForPlayer(player);
+
+        ItemStack book = new ItemStack(Material.WRITTEN_BOOK);
+        BookMeta meta = (BookMeta) book.getItemMeta();
+
+        meta.setTitle("Report a Player");
+        meta.setAuthor("ethebee3");
+        for (String page : pages) {
+            meta.spigot().addPage(stringToBaseComponent(page));
+        }
+
+        book.setItemMeta(meta);
+        player.openBook(book);
+    }
+
+    private String createClickableLine(String message, String command) {
+        return "{\"text\": \"" + message + "\", \"clickEvent\": {\"action\": \"run_command\", \"value\": \"" + command + "\"}}";
+    }
+
+    private String createRegularLine(String message) {
+        return "{\"text\": \"" + message + "\"}";
     }
 
     private void closeBookForPlayer(Player player) {
@@ -167,30 +128,27 @@ public class reportCMD implements CommandExecutor {
         }
     }
 
+    public void finishBookReport(String reporter, String reported, String category, String type/*, String notes*/) {
+        String webhookURL = "";
 
+        String jsonPayload = String.format("""
+                {
+                    "content": "New player report:",
+                    "embeds": [
+                        {
+                            "title": "Report from %s",
+                            "color": 7506394,
+                            "fields": [
+                                {
+                                    "name": "Player",
+                                    "value": "%s is being reported for %s (%s)"
+                                }
+                            ],
+                        }
+                    ]
+                }
+                """, reporter, reported, category, type);
 
-
-    public void finishBookReport(String player1, String player2, String type1, String type2, String extra) {
-        String webhookURL = "https://discord.com/api/webhooks/YOUR_WEBHOOK_ID/YOUR_WEBHOOK_TOKEN";
-        String jsonPayload = String.join("\n",
-                "{",
-                "\"content\": \"New player report:\",",
-                "\"embeds\": [",
-                "    {",
-                "      \"title\": \" report from ", player1 ,"\",",
-                "      \"color\": 7506394,",
-                "      \"fields\": [",
-                "        {",
-                "          \"name\": \" player, ", player2 ,"is being reported for", type1 ,"\",",
-                "          \"value\": \"", player2," broke the rules by ", type2 ,"\"",
-                "        },",
-                "      ],",
-                "      \"footer\": {",
-                "        \"text\": \"Extra notes from reporter: ", extra ,"\"",
-                "      }",
-                "    }",
-                "  ]",
-                "");
         sendWebhookRequest(webhookURL, jsonPayload);
     }
 
@@ -201,10 +159,12 @@ public class reportCMD implements CommandExecutor {
             connection.setRequestMethod("POST");
             connection.setRequestProperty("Content-Type", "application/json");
             connection.setDoOutput(true);
+
             try (OutputStream os = connection.getOutputStream()) {
                 byte[] input = jsonPayload.getBytes(StandardCharsets.UTF_8);
-                ((java.io.OutputStream) os).write(input, 0, input.length);
+                os.write(input, 0, input.length);
             }
+
             int responseCode = connection.getResponseCode();
             if (responseCode == HttpURLConnection.HTTP_OK) {
                 System.out.println("Webhook sent successfully.");
@@ -216,4 +176,11 @@ public class reportCMD implements CommandExecutor {
         }
     }
 
+    public static BaseComponent[] stringToBaseComponent(String message) {
+        // Create a new TextComponent from the string
+        TextComponent textComponent = new TextComponent(message);
+
+        // If you need an array of BaseComponent, wrap it in an array
+        return new BaseComponent[]{textComponent};
+    }
 }
